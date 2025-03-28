@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - 卡路里小程序</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            background-color: #f7f7f7;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .status-bar {
+            height: 44px;
+            background-color: #ffffff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .status-icons {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        .time {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 600;
+        }
+        .tab-bar {
+            height: 50px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            background-color: #ffffff;
+        }
+        .tab-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #999;
+        }
+        .tab-item.active {
+            color: #FE2C55;
+        }
+        .tab-item i {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+        .header-bg {
+            background: linear-gradient(135deg, #FF9370 0%, #FF3058 100%);
+        }
+        .menu-item {
+            height: 60px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .badge {
+            background-color: #FE2C55;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-full">
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <div class="time">9:41</div>
+        <div class="status-icons">
+            <div class="mr-1"><i class="fas fa-signal"></i></div>
+            <div class="mr-1"><i class="fas fa-wifi"></i></div>
+            <div><i class="fas fa-battery-full"></i></div>
+        </div>
+    </div>
+    
+    <!-- 个人信息头部 -->
+    <div class="header-bg text-white p-6 pb-12">
+        <div class="flex items-center">
+            <div class="w-20 h-20 rounded-full bg-white p-1 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=80&h=80&q=80" alt="User" class="w-full h-full object-cover rounded-full">
+            </div>
+            <div class="ml-4 flex-1">
+                <h2 class="text-xl font-semibold">小明</h2>
+                <p class="opacity-80 text-sm mt-1">抖音号: douyin_12345678</p>
+                <div class="mt-2 flex items-center">
+                    <span class="text-xs bg-white bg-opacity-20 px-2 py-1 rounded-sm">已连续打卡 23 天</span>
+                </div>
+            </div>
+            <div>
+                <i class="fas fa-qrcode text-xl"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 健康数据卡片 -->
+    <div class="px-5 -mt-6">
+        <div class="bg-white rounded-lg shadow-sm p-4">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="font-medium">健康数据</h3>
+                <a href="#" class="text-xs text-gray-500">详情 <i class="fas fa-chevron-right text-xs"></i></a>
+            </div>
+            <div class="grid grid-cols-4 gap-2 text-center">
+                <div>
+                    <p class="text-xs text-gray-500">身高</p>
+                    <p class="font-medium">168cm</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">体重</p>
+                    <p class="font-medium">60kg</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">BMI</p>
+                    <p class="font-medium">21.3</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">目标</p>
+                    <p class="font-medium">健康减脂</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 主要内容 -->
+    <div class="flex-1 overflow-y-auto mt-4 pb-16">
+        <!-- 会员信息 -->
+        <div class="px-5 mb-4">
+            <div class="bg-gradient-to-r from-yellow-500 to-yellow-300 rounded-lg p-4 flex items-center">
+                <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
+                    <i class="fas fa-crown text-yellow-500"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="font-medium text-white">开通会员</h4>
+                    <p class="text-xs text-white opacity-80">享受更专业的饮食建议和健康计划</p>
+                </div>
+                <button class="bg-white text-yellow-500 text-xs px-3 py-1 rounded-full font-medium">
+                    立即开通
+                </button>
+            </div>
+        </div>
+        
+        <!-- 菜单列表 -->
+        <div class="bg-white">
+            <!-- 我的服务 -->
+            <div class="px-5 py-2 text-sm text-gray-500">我的服务</div>
+            <div class="px-5">
+                <div class="menu-item flex items-center">
+                    <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-history text-blue-500"></i>
+                    </div>
+                    <div class="flex-1">历史记录</div>
+                    <div class="text-gray-400"><i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="menu-item flex items-center">
+                    <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-bookmark text-green-500"></i>
+                    </div>
+                    <div class="flex-1">我的收藏</div>
+                    <div class="text-gray-400"><i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="menu-item flex items-center">
+                    <div class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-book-medical text-purple-500"></i>
+                    </div>
+                    <div class="flex-1">健康档案</div>
+                    <div class="text-gray-400"><i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="menu-item flex items-center">
+                    <div class="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-share-alt text-pink-500"></i>
+                    </div>
+                    <div class="flex-1">我的分享</div>
+                    <div class="text-gray-400"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+            
+            <!-- 设置与帮助 -->
+            <div class="px-5 py-2 text-sm text-gray-500 mt-4">设置与帮助</div>
+            <div class="px-5">
+                <div class="menu-item flex items-center">
+                    <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-user-edit text-gray-500"></i>
+                    </div>
+                    <div class="flex-1">个人资料</div>
+                    <div class="text-gray-400"><i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="menu-item flex items-center">
+                    <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-bell text-gray-500"></i>
+                    </div>
+                    <div class="flex-1">消息通知</div>
+                    <div class="flex items-center">
+                        <span class="badge mr-2">2</span>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="menu-item flex items-center">
+                    <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-cog text-gray-500"></i>
+                    </div>
+                    <div class="flex-1">通用设置</div>
+                    <div class="text-gray-400"><i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="menu-item flex items-center">
+                    <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-question-circle text-gray-500"></i>
+                    </div>
+                    <div class="flex-1">帮助与反馈</div>
+                    <div class="text-gray-400"><i class="fas fa-chevron-right"></i></div>
+                </div>
+                <div class="menu-item flex items-center">
+                    <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center mr-3">
+                        <i class="fas fa-info-circle text-gray-500"></i>
+                    </div>
+                    <div class="flex-1">关于我们</div>
+                    <div class="text-gray-400"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部标签栏 -->
+    <div class="tab-bar">
+        <div class="tab-item">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </div>
+        <div class="tab-item">
+            <i class="fas fa-chart-pie"></i>
+            <span>统计</span>
+        </div>
+        <div class="tab-item opacity-0">
+            <i class="fas fa-plus"></i>
+            <span>拍照</span>
+        </div>
+        <div class="tab-item">
+            <i class="fas fa-book"></i>
+            <span>食物库</span>
+        </div>
+        <div class="tab-item active">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </div>
+    </div>
+</body>
+</html> 

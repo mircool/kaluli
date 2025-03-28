@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人信息 - 卡路里小程序</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            background-color: #ffffff;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .status-bar {
+            height: 44px;
+            background-color: #ffffff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .status-icons {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        .time {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 600;
+        }
+        .primary-btn {
+            background: linear-gradient(90deg, #FE2C55 0%, #FF0844 100%);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #eee;
+            border-radius: 5px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            background: #FE2C55;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-full">
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <div class="time">9:41</div>
+        <div class="status-icons">
+            <div class="mr-1">
+                <i class="fas fa-signal"></i>
+            </div>
+            <div class="mr-1">
+                <i class="fas fa-wifi"></i>
+            </div>
+            <div>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 导航栏 -->
+    <div class="flex items-center px-4 h-12 border-b border-gray-100">
+        <div class="w-8"></div>
+        <h1 class="flex-1 text-center font-semibold">完善个人信息</h1>
+        <div class="w-8 text-gray-400 text-sm">跳过</div>
+    </div>
+    
+    <!-- 主要内容 -->
+    <div class="flex-1 px-6 py-6 overflow-y-auto">
+        <div class="mb-8">
+            <p class="text-gray-500 mb-6 text-center">为了提供更精准的卡路里数据<br>请完善以下基础信息</p>
+            
+            <!-- 步骤指示器 -->
+            <div class="flex justify-between items-center mb-8 px-8">
+                <div class="flex flex-col items-center">
+                    <div class="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-medium">1</div>
+                    <span class="text-xs text-gray-500 mt-1">基本信息</span>
+                </div>
+                <div class="flex-1 h-px bg-gray-200 mx-2"></div>
+                <div class="flex flex-col items-center">
+                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 font-medium">2</div>
+                    <span class="text-xs text-gray-400 mt-1">健康目标</span>
+                </div>
+                <div class="flex-1 h-px bg-gray-200 mx-2"></div>
+                <div class="flex flex-col items-center">
+                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 font-medium">3</div>
+                    <span class="text-xs text-gray-400 mt-1">完成</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 表单部分 -->
+        <form>
+            <!-- 性别选择 -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">性别</label>
+                <div class="flex space-x-4">
+                    <div class="flex-1">
+                        <input type="radio" id="male" name="gender" value="male" class="hidden peer">
+                        <label for="male" class="block text-center py-2 border border-gray-200 rounded-lg peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:text-red-500 cursor-pointer">
+                            <i class="fas fa-mars text-lg mb-1"></i>
+                            <div>男</div>
+                        </label>
+                    </div>
+                    <div class="flex-1">
+                        <input type="radio" id="female" name="gender" value="female" class="hidden peer" checked>
+                        <label for="female" class="block text-center py-2 border border-gray-200 rounded-lg peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:text-red-500 cursor-pointer">
+                            <i class="fas fa-venus text-lg mb-1"></i>
+                            <div>女</div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 年龄选择 -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">年龄 <span class="text-red-500 text-lg ml-1">25</span> 岁</label>
+                <div class="px-2">
+                    <input type="range" min="12" max="80" value="25" class="w-full">
+                </div>
+                <div class="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>12岁</span>
+                    <span>80岁</span>
+                </div>
+            </div>
+            
+            <!-- 身高选择 -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">身高 <span class="text-red-500 text-lg ml-1">168</span> cm</label>
+                <div class="px-2">
+                    <input type="range" min="140" max="220" value="168" class="w-full">
+                </div>
+                <div class="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>140cm</span>
+                    <span>220cm</span>
+                </div>
+            </div>
+            
+            <!-- 体重选择 -->
+            <div class="mb-8">
+                <label class="block text-sm font-medium text-gray-700 mb-2">体重 <span class="text-red-500 text-lg ml-1">60</span> kg</label>
+                <div class="px-2">
+                    <input type="range" min="30" max="150" value="60" class="w-full">
+                </div>
+                <div class="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>30kg</span>
+                    <span>150kg</span>
+                </div>
+            </div>
+            
+            <!-- 按钮 -->
+            <button type="button" class="primary-btn text-white py-3 px-4 rounded-full w-full flex items-center justify-center font-medium mt-4">
+                下一步
+            </button>
+        </form>
+    </div>
+</body>
+</html> 
