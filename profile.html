@@ -13,6 +13,7 @@
             background-color: #f7f7f7;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
         }
         .status-bar {
             height: 44px;
@@ -43,6 +44,11 @@
             border-top: 1px solid #f0f0f0;
             display: flex;
             background-color: #ffffff;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
         }
         .tab-item {
             flex: 1;
@@ -73,6 +79,11 @@
             border-radius: 10px;
             padding: 2px 6px;
             font-size: 10px;
+        }
+        .main-content {
+            height: calc(100vh - 94px);
+            overflow-y: auto;
+            padding-bottom: 70px;
         }
     </style>
 </head>
@@ -135,7 +146,7 @@
     </div>
     
     <!-- 主要内容 -->
-    <div class="flex-1 overflow-y-auto mt-4 pb-16">
+    <div class="main-content">
         <!-- 会员信息 -->
         <div class="px-5 mb-4">
             <div class="bg-gradient-to-r from-yellow-500 to-yellow-300 rounded-lg p-4 flex items-center">
