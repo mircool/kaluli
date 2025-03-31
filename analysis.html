@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>营养分析 - 卡路里小程序</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            background-color: #ffffff;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
+        }
+        .status-bar {
+            height: 44px;
+            background-color: #ffffff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .status-icons {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        .time {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 600;
+        }
+        .tab-bar {
+            height: 50px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            background-color: #ffffff;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+        }
+        .tab-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #999;
+        }
+        .tab-item.active {
+            color: #FE2C55;
+        }
+        .tab-item i {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+        .main-content {
+            height: calc(100vh - 94px);
+            overflow-y: auto;
+            padding-bottom: 70px;
+        }
+        .nutrition-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .star-badge {
+            width: 24px;
+            height: 24px;
+            background-color: #FE2C55;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+        }
+        .primary-btn {
+            background: linear-gradient(90deg, #FE2C55 0%, #FF0844 100%);
+        }
+        .food-card {
+            border-radius: 16px;
+            background-color: #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .nutrition-progress {
+            height: 8px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+            width: 100%;
+        }
+        .nutrition-progress-bar {
+            height: 100%;
+            border-radius: 4px;
+        }
+        .protein-color {
+            background-color: #4CAF50;
+        }
+        .carbs-color {
+            background-color: #FF9800;
+        }
+        .fat-color {
+            background-color: #F44336;
+        }
+        .fiber-color {
+            background-color: #9C27B0;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-full">
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <div class="time">9:41</div>
+        <div class="status-icons">
+            <div class="mr-1"><i class="fas fa-signal"></i></div>
+            <div class="mr-1"><i class="fas fa-wifi"></i></div>
+            <div><i class="fas fa-battery-full"></i></div>
+        </div>
+    </div>
+    
+    <!-- 导航栏 -->
+    <div class="flex items-center px-4 h-12 border-b border-gray-100">
+        <div class="w-8" onclick="window.history.back()">
+            <i class="fas fa-arrow-left text-gray-500"></i>
+        </div>
+        <h1 class="flex-1 text-center font-semibold">营养分析</h1>
+        <div class="w-8">
+            <i class="far fa-share-square text-gray-500"></i>
+        </div>
+    </div>
+    
+    <!-- 主要内容 -->
+    <div class="main-content">
+        <!-- 食物基本信息 -->
+        <div class="p-5">
+            <div class="food-card p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="rounded-full bg-gray-100 w-16 h-16 overflow-hidden mr-4">
+                            <img src="https://images.unsplash.com/photo-1613564834361-9436948817d1?q=80&w=2686&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="包子" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold">包子</h2>
+                            <p class="text-gray-500">一个 | 约100克</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-2xl font-bold text-red-500">80</span>
+                        <span class="text-gray-500 ml-1">千卡</span>
+                        <div class="star-badge ml-2">
+                            <i class="fas fa-star text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <div class="flex justify-between mb-1">
+                        <span class="text-gray-700">总热量</span>
+                        <span class="text-gray-700">80千卡 (推荐摄入量的4%)</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-bar bg-red-500" style="width: 4%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 营养成分 -->
+        <div class="px-5 mb-6">
+            <h3 class="font-semibold mb-4">营养成分</h3>
+            
+            <!-- 蛋白质 -->
+            <div class="nutrition-item">
+                <div class="flex-1">
+                    <div class="flex justify-between mb-1">
+                        <span class="font-medium">蛋白质</span>
+                        <span class="text-gray-700">50克</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-bar protein-color" style="width: 60%;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 碳水 -->
+            <div class="nutrition-item">
+                <div class="flex-1">
+                    <div class="flex justify-between mb-1">
+                        <span class="font-medium">碳水化合物</span>
+                        <span class="text-gray-700">30克</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-bar carbs-color" style="width: 30%;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 脂肪 -->
+            <div class="nutrition-item">
+                <div class="flex-1">
+                    <div class="flex justify-between mb-1">
+                        <span class="font-medium">脂肪</span>
+                        <span class="text-gray-700">15克</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-bar fat-color" style="width: 25%;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 纤维 -->
+            <div class="nutrition-item">
+                <div class="flex-1">
+                    <div class="flex justify-between mb-1">
+                        <span class="font-medium">纤维</span>
+                        <span class="text-gray-700">10克</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-bar fiber-color" style="width: 20%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 营养比例图表 -->
+        <div class="px-5 mb-8">
+            <h3 class="font-semibold mb-4">营养比例</h3>
+            <div class="p-4 bg-gray-50 rounded-xl">
+                <div class="flex justify-between items-center">
+                    <div class="w-32 h-32 relative">
+                        <!-- 饼图，使用简单的色块表示 -->
+                        <div class="absolute inset-0 rounded-full overflow-hidden">
+                            <div class="bg-green-500 absolute" style="top: 0; left: 0; right: 0; bottom: 50%; transform-origin: bottom right; transform: rotate(0deg);"></div>
+                            <div class="bg-yellow-500 absolute" style="top: 0; left: 0; width: 50%; bottom: 0; transform-origin: bottom right; transform: rotate(90deg);"></div>
+                            <div class="bg-red-500 absolute" style="top: 50%; left: 0; right: 0; bottom: 0; transform-origin: top left; transform: rotate(0deg);"></div>
+                            <div class="bg-purple-500 absolute" style="top: 0; left: 50%; right: 0; bottom: 0; transform-origin: bottom left; transform: rotate(0deg);"></div>
+                        </div>
+                    </div>
+                    <div class="flex-1 ml-4">
+                        <div class="flex items-center mb-2">
+                            <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                            <span class="text-sm">蛋白质 48%</span>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                            <span class="text-sm">碳水化合物 29%</span>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                            <span class="text-sm">脂肪 14%</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-purple-500 mr-2"></div>
+                            <span class="text-sm">纤维 9%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部按钮 -->
+        <div class="px-5 mb-8">
+            <button class="primary-btn text-white py-3 rounded-xl w-full flex items-center justify-center font-medium">
+                <i class="fas fa-star mr-2"></i>
+                收藏此分析
+            </button>
+            
+            <div class="flex mt-4 justify-between">
+                <button class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl mr-2 flex items-center justify-center font-medium">
+                    <i class="fas fa-share-alt mr-2"></i>
+                    分享
+                </button>
+                <button class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl ml-2 flex items-center justify-center font-medium">
+                    <i class="fas fa-history mr-2"></i>
+                    加入记录
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部标签栏 -->
+    <div class="tab-bar">
+        <div class="tab-item">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </div>
+        <div class="tab-item">
+            <i class="fas fa-chart-pie"></i>
+            <span>统计</span>
+        </div>
+        <div class="tab-item opacity-0">
+            <i class="fas fa-plus"></i>
+            <span>拍照</span>
+        </div>
+        <div class="tab-item active">
+            <i class="fas fa-book"></i>
+            <span>食物库</span>
+        </div>
+        <div class="tab-item">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </div>
+    </div>
+</body>
+</html> 
