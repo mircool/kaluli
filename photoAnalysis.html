@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>营养分析 - 卡路里小程序</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            background-color: #000000;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
+        }
+        .status-bar {
+            height: 44px;
+            background-color: transparent;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            z-index: 10;
+        }
+        .status-icons {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        .time {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 600;
+        }
+        .photo-container {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 190px);
+            background-color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .food-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 5;
+        }
+        .analysis-frame {
+            position: relative;
+            z-index: 10;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            width: 80%;
+            height: 60%;
+        }
+        .nutrition-tag {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 16px;
+            font-size: 12px;
+            z-index: 15;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .protein-tag {
+            top: 35%;
+            left: 25%;
+        }
+        .carbs-tag {
+            top: 30%;
+            right: 30%;
+        }
+        .fat-tag {
+            bottom: 40%;
+            left: 30%;
+        }
+        .fiber-tag {
+            bottom: 35%;
+            right: 28%;
+        }
+        .bottom-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 145px;
+            background-color: #000000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            z-index: 20;
+        }
+        .star-badge {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #FE2C55;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            right: 20px;
+            top: 20px;
+            z-index: 15;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        .cal-tag {
+            position: absolute;
+            bottom: 160px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(254, 44, 85, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 15;
+            box-shadow: 0 4px 12px rgba(254, 44, 85, 0.3);
+        }
+        .analysis-modes {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .analysis-mode {
+            color: #999;
+            font-size: 14px;
+            margin: 0 15px;
+            padding-bottom: 5px;
+        }
+        .analysis-mode.active {
+            color: white;
+            font-weight: 600;
+            border-bottom: 2px solid #FE2C55;
+        }
+        .analysis-btn {
+            width: 120px;
+            height: 44px;
+            border-radius: 22px;
+            background: linear-gradient(90deg, #FE2C55 0%, #FF0844 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(254, 44, 85, 0.3);
+        }
+        .overlay-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 15;
+        }
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="flex flex-col h-full">
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <div class="time">9:41</div>
+        <div class="status-icons">
+            <div class="mr-1"><i class="fas fa-signal"></i></div>
+            <div class="mr-1"><i class="fas fa-wifi"></i></div>
+            <div><i class="fas fa-battery-full"></i></div>
+        </div>
+    </div>
+    
+    <!-- 图片分析区域 -->
+    <div class="photo-container">
+        <!-- 食物图片 -->
+        <img src="https://images.unsplash.com/photo-1613564834361-9436948817d1?q=80&w=2686&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Pizza" class="food-image">
+        
+        <!-- 分析框 -->
+        <div class="analysis-frame"></div>
+        
+        <!-- 顶部控制区 -->
+        <div class="overlay-controls">
+            <div class="control-btn" onclick="window.history.back()">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <div class="control-btn">
+                <i class="fas fa-share-alt"></i>
+            </div>
+        </div>
+        
+        <!-- 营养标签 -->
+        <div class="nutrition-tag protein-tag">
+            蛋白质: 50克
+        </div>
+        <div class="nutrition-tag carbs-tag">
+            碳水: 30克
+        </div>
+        <div class="nutrition-tag fat-tag">
+            脂肪: 15克
+        </div>
+        <div class="nutrition-tag fiber-tag">
+            纤维: 10克
+        </div>
+        
+        <!-- 卡路里标签 -->
+        <div class="cal-tag">
+            Cal 80 <i class="fas fa-check-circle ml-1 text-green-300"></i>
+        </div>
+        
+        <!-- 星标 -->
+        <div class="star-badge">
+            <i class="fas fa-star"></i>
+        </div>
+    </div>
+    
+    <!-- 底部控制区 -->
+    <div class="bottom-controls">
+        <!-- 分析模式选择 -->
+        <div class="analysis-modes">
+            <div class="analysis-mode">基础分析</div>
+            <div class="analysis-mode active">详细分析</div>
+            <div class="analysis-mode">健康建议</div>
+        </div>
+        
+        <!-- 转跳按钮 -->
+        <a href="analysis.html" class="analysis-btn">
+            详细报告
+        </a>
+    </div>
+</body>
+</html> 
